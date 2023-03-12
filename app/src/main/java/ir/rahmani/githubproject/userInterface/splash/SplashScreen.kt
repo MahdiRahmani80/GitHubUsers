@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,21 +31,22 @@ fun SplashScreen() {
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = MaterialTheme.colorScheme.primary)
-                .padding(0.dp, 110.dp,0.dp,0.dp),
+                .padding(0.dp, 110.dp, 0.dp, 0.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
 
-            Image(
+            Icon(
                 painter = painterResource(id = R.drawable.ic_github),
-                contentDescription = "splash logo"
+                contentDescription = "splash logo",
+                tint = MaterialTheme.colorScheme.secondary
             )
 
 
             Text(
                 text = stringResource(id = R.string.app_name) ,
                 fontWeight = FontWeight.SemiBold,
-                color = Color.White,
+                color = MaterialTheme.colorScheme.tertiary,
                 fontSize = 18.sp,
                 fontStyle = FontStyle.Italic,
                 modifier = Modifier.padding(0.dp,20.dp,0.dp,0.dp)
