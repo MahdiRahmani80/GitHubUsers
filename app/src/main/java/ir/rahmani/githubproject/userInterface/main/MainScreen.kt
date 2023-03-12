@@ -1,6 +1,8 @@
 package ir.rahmani.githubproject.userInterface.main
 
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,7 +14,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.graphics.Color
@@ -28,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import ir.rahmani.githubproject.R
 import ir.rahmani.githubproject.ui.theme.GithubprojectTheme
 import ir.rahmani.githubproject.userInterface.util.NoDataExist
+import ir.rahmani.githubproject.userInterface.util.SearchResult
 
 
 @Composable
@@ -51,14 +53,22 @@ fun MainScreen() {
                 Column {
 
                     Header()
-                    Spacer(modifier = Modifier.padding(7.dp))
-                    SearchBox(){
+                    Spacer(modifier = Modifier.padding(5.dp))
+                    SearchBox() {
                         // todo -> check for valid inputs
                         // todo -> go to result screen
                     }
                 }
             }
-            NoDataExist()
+
+            // this part we show are results
+            // if we have no result
+            // NoDataExist()
+            //else
+            SearchResult(list = arrayListOf<String>("Ali","Mahdi","Reza","Mohammad Reza","A","B","Mohammad Reza","A","B")){ id->
+                // get list id
+                // todo -> go to the detail page
+            }
         }
     }
 }

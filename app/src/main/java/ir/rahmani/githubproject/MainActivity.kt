@@ -1,13 +1,16 @@
 package ir.rahmani.githubproject
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+
 import androidx.compose.ui.tooling.preview.Preview
 import ir.rahmani.githubproject.ui.theme.GithubprojectTheme
 import ir.rahmani.githubproject.userInterface.SplashScreen
@@ -18,7 +21,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val vm:MainViewModel by viewModel()
+        val vm: MainViewModel by viewModel()
 
         setContent {
             GithubprojectTheme {
@@ -28,14 +31,24 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
 
-                    // todo -> after 2.5 second go to home screen
-//                    SplashScreen()
-                    // todo -> make home screen
-                    MainScreen()
+                    Column {
+                        ShowScreen()
+                    }
                 }
             }
         }
     }
+}
+
+@Composable
+fun ShowScreen() {
+
+    // todo -> after 2.5 second go to home screen
+    // SplashScreen()
+    // todo -> make home screen
+    MainScreen()
+
+
 }
 
 @Preview(showBackground = true)
