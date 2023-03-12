@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import ir.rahmani.githubproject.ui.theme.GithubprojectTheme
 import ir.rahmani.githubproject.userInterface.SplashScreen
+import ir.rahmani.githubproject.userInterface.detail.DetailScreen
 import ir.rahmani.githubproject.userInterface.main.MainScreen
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -45,8 +46,11 @@ fun ShowScreen() {
 
     // todo -> after 2.5 second go to home screen
     // SplashScreen()
-    // todo -> make home screen
-    MainScreen()
+    // MainScreen()
+    DetailScreen()
+    // todo -> Make Detail Screen
+    // todo -> Following And Follower Screen
+    // todo -> Favorite Screen
 
 
 }

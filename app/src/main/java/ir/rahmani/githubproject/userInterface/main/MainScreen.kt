@@ -1,8 +1,5 @@
 package ir.rahmani.githubproject.userInterface.main
 
-
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -54,7 +51,7 @@ fun MainScreen() {
 
                     Header()
                     Spacer(modifier = Modifier.padding(5.dp))
-                    SearchBox() {
+                    SearchBox {
                         // todo -> check for valid inputs
                         // todo -> go to result screen
                     }
@@ -63,12 +60,12 @@ fun MainScreen() {
 
             // this part we show are results
             // if we have no result
-            // NoDataExist()
+             NoDataExist()
             //else
-            SearchResult(list = arrayListOf<String>("Ali","Mahdi","Reza","Mohammad Reza","A","B","Mohammad Reza","A","B")){ id->
-                // get list id
-                // todo -> go to the detail page
-            }
+//            SearchResult(list = arrayListOf("Ali","Mahdi","Reza","Mohammad Reza","A","B","Mohammad Reza","A","B")){ id->
+//                 get list id
+//                 todo -> go to the detail page
+//            }
         }
     }
 }
@@ -137,7 +134,7 @@ fun SearchBox(onClicked: () -> Unit) {
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(onSearch = {
 
-                onClicked
+                onClicked()
             }),
             placeholder = {
                 Text(
