@@ -1,10 +1,8 @@
-package ir.rahmani.githubproject.userInterface
+package ir.rahmani.githubproject.userInterface.util
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -15,46 +13,39 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ir.rahmani.githubproject.R
-
 import ir.rahmani.githubproject.ui.theme.GithubprojectTheme
 
+
 @Composable
-fun SplashScreen() {
+fun NoDataExist(){
 
     GithubprojectTheme {
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = MaterialTheme.colorScheme.primary)
-                .padding(0.dp, 110.dp, 0.dp, 0.dp),
+                .background(Color.White),
+            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-
-            Icon(
-                painter = painterResource(id = R.drawable.ic_github),
-                contentDescription = "splash logo",
-                tint = MaterialTheme.colorScheme.secondary
+            Image(
+                painter = painterResource(id = R.drawable.empty_box),
+                contentDescription = "No Data",
+                modifier = Modifier.size(120.dp)
             )
 
-
-            Text(
-                text = stringResource(id = R.string.app_name) ,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.tertiary,
-                fontSize = 18.sp,
+            Spacer(modifier = Modifier.padding(5.dp))
+            Text(text = stringResource(id = R.string.no_data),
                 fontFamily = FontFamily.SansSerif,
-                fontStyle = FontStyle.Italic,
-                modifier = Modifier.padding(0.dp,20.dp,0.dp,0.dp)
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp
             )
 
         }
-
     }
 }
