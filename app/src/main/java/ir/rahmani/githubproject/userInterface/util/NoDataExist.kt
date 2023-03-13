@@ -3,8 +3,6 @@ package ir.rahmani.githubproject.userInterface.util
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -39,9 +37,10 @@ fun NoDataExist(){
             )
 
             Spacer(modifier = Modifier.padding(5.dp))
+
             Text(text = stringResource(id = R.string.no_data),
                 fontFamily = FontFamily.SansSerif,
-                color = MaterialTheme.colorScheme.primary,
+                color = Color.Gray,
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp
             )

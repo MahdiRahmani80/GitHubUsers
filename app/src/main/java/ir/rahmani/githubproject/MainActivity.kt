@@ -22,44 +22,18 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val vm: MainViewModel by viewModel()
 
         setContent {
             GithubprojectTheme {
-
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-
-                    Navigation()
-//                    Column {
-//                        ShowScreen()
-//                    }
-                }
+                Navigation()
             }
         }
     }
-}
-
-@Composable
-fun ShowScreen() {
-
-    // todo -> after 2.5 second go to home screen
-    // SplashScreen()
-    // MainScreen()
-    DetailScreen()
-    // todo -> Make Detail Screen
-    // todo -> Following And Follower Screen
-    // todo -> Favorite Screen
-
-
 }
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     GithubprojectTheme {
-        SplashScreen()
     }
 }

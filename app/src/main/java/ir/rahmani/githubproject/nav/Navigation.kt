@@ -17,12 +17,7 @@ fun Navigation(){
     NavHost(navController = navController, startDestination = Screen.Splash.route ){
 
         composable(route = Screen.Splash.route){
-            SplashScreen()
-//            navController.navigate(Screen.MainScreen.route){
-//                popUpTo(Screen.Splash.route){
-//                    inclusive=true
-//                }
-//            }
+            SplashScreen(navController)
         }
         composable(route = Screen.MainScreen.route){
             MainScreen()

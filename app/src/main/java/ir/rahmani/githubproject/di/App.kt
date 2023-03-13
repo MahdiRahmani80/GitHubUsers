@@ -1,7 +1,7 @@
 package ir.rahmani.githubproject.di
 
 import android.app.Application
-import ir.rahmani.githubproject.MainViewModel
+import ir.rahmani.githubproject.userInterface.splash.SplashViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
@@ -14,7 +14,7 @@ class App: Application() {
 
         val myModules = module {
 
-            viewModel { MainViewModel() }
+            single { SplashViewModel() }
         }
 
         startKoin {
