@@ -32,9 +32,10 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
 
-                    Column {
-                        ShowScreen()
-                    }
+                    Navigation()
+//                    Column {
+//                        ShowScreen()
+//                    }
                 }
             }
         }
