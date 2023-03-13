@@ -56,6 +56,12 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
     implementation 'com.squareup.okhttp3:okhttp:3.6.0'
 
+    // Pager library
+    def accompanist_version = "0.25.1"
+    implementation "com.google.accompanist:accompanist-pager:$accompanist_version" // Pager
+    implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version" // Pager Indicators
+
+
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'

@@ -2,4 +2,7 @@
     <string name="app_name">GithubUsers</string>
     <string name="search_txt">Search Some User</string>
     <string name="no_data">No Data Available</string>
+    <string name="follower">Follower</string>
+    <string name="following">Following</string>
+    <string name="repository">Repository</string>
 </resources>

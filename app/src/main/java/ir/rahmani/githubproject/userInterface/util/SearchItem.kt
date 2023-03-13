@@ -32,6 +32,7 @@ fun SearchResult(list: ArrayList<String>, onClick: (id: Int) -> Unit) {
                 .fillMaxSize()
                 .background(Color.White)
         ) {
+
             items(count = list.size) { index ->
 
                 Card(
@@ -74,5 +75,6 @@ fun SearchResult(list: ArrayList<String>, onClick: (id: Int) -> Unit) {
 
             }
         }
+
     }
 }
