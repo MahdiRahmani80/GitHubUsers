@@ -23,6 +23,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import ir.rahmani.githubproject.R
 import ir.rahmani.githubproject.ui.theme.GithubprojectTheme
 import ir.rahmani.githubproject.userInterface.util.NoDataExist
@@ -30,7 +31,7 @@ import ir.rahmani.githubproject.userInterface.util.SearchResult
 
 
 @Composable
-fun MainScreen() {
+fun MainScreen(navController: NavController) {
 
     GithubprojectTheme {
         Column(
@@ -60,7 +61,7 @@ fun MainScreen() {
 
             // this part we show are results
             // if we have no result
-             NoDataExist()
+            NoDataExist()
             //else
 //            SearchResult(list = arrayListOf("Ali","Mahdi","Reza","Mohammad Reza","A","B","Mohammad Reza","A","B")){ id->
 //                 get list id
@@ -124,7 +125,7 @@ fun SearchBox(onClicked: () -> Unit) {
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             ),
-            onValueChange = { text = it },
+            onValueChange = { text = it;onClicked() },
             singleLine = true,
             textStyle = TextStyle(color = Color.Black),
             leadingIcon = {
