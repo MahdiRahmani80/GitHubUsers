@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
 import ir.rahmani.githubproject.R
 import ir.rahmani.githubproject.model.User
 import ir.rahmani.githubproject.ui.theme.GithubprojectTheme
@@ -62,7 +63,10 @@ fun SearchResult(list: List<User>, onClick: (id: Int) -> Unit) {
 
                         if (list[index].avatar_url!!.isNotEmpty()) {
                             Image(
-                                painter = painterResource(id = R.drawable.ic_launcher_background),// todo-> get images in Data
+                                painter = rememberAsyncImagePainter(
+                                    list[index].avatar_url!!,
+                                    placeholder = painterResource(id = R.drawable.ic_launcher_background)
+                                ),
                                 contentDescription = "use image",
                                 modifier = Modifier
                                     .clip(androidx.compose.foundation.shape.CircleShape)

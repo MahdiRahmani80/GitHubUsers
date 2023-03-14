@@ -14,8 +14,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -28,12 +32,14 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import ir.rahmani.githubproject.R
 import ir.rahmani.githubproject.model.User
+import ir.rahmani.githubproject.nav.Screen
 import ir.rahmani.githubproject.ui.theme.GithubprojectTheme
 import ir.rahmani.githubproject.userInterface.util.ApiState
 import ir.rahmani.githubproject.userInterface.util.NoDataExist
 import ir.rahmani.githubproject.userInterface.util.SearchResult
 import org.koin.androidx.compose.get
 import org.koin.androidx.compose.inject
+import org.koin.core.scope.ScopeID
 
 
 @SuppressLint("UnrememberedMutableState")
@@ -43,7 +49,7 @@ fun MainScreen(navController: NavController) {
     val searchedText by mutableStateOf("")
     val vm: MainViewModel by inject()
 
-    val dataState:ApiState = vm.response.value
+    val dataState: ApiState = vm.response.value
 
     GithubprojectTheme {
         Column(
@@ -65,7 +71,7 @@ fun MainScreen(navController: NavController) {
                     Header()
                     Spacer(modifier = Modifier.padding(5.dp))
 
-                    SearchBox {text->
+                    SearchBox { text ->
                         vm.searchUser(text)
                     }
                 }
@@ -76,8 +82,8 @@ fun MainScreen(navController: NavController) {
             } else {
 //                val users=search(searchedText,vm)
                 SearchResult(dataState.data.items!!) { id ->
-//                     todo onClick item
-            }
+//                     navController.navigate(Screen.Splash.route) todo-> go to detail
+                }
             }
         }
     }
@@ -121,6 +127,7 @@ fun Header() {
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchBox(onClicked: (text: String) -> Unit) {
     Box(
@@ -130,6 +137,8 @@ fun SearchBox(onClicked: (text: String) -> Unit) {
     ) {
 
         var text by remember { mutableStateOf(TextFieldValue("")) }
+        val keyboardController = LocalSoftwareKeyboardController.current
+
         TextField(
             value = text,
             colors = TextFieldDefaults.textFieldColors(
@@ -137,16 +146,25 @@ fun SearchBox(onClicked: (text: String) -> Unit) {
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             ),
-            onValueChange = { text = it;/*onClicked()*/ },
+            onValueChange = { text = it; },
             singleLine = true,
             textStyle = TextStyle(color = Color.Black),
             leadingIcon = {
                 Icon(Icons.Default.Search, "", tint = Color.Gray)
             },
-
+            trailingIcon = {
+                if (text.text.isNotEmpty()) {
+                    IconButton(onClick = {
+                        text = TextFieldValue("")
+                        keyboardController?.show()
+                    }) {
+                        Icon(Icons.Default.Close, "", tint = Color.Gray)
+                    }
+                }
+            },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(onSearch = {
-
+                keyboardController?.hide()
                 onClicked(text.text)
             }),
             placeholder = {
