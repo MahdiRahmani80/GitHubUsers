@@ -297,21 +297,21 @@ fun TabScreen(text: String) {
             .fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
-        SearchResult(
-            list = arrayListOf(
-                "Ali",
-                "Mahdi",
-                "Reza",
-                "Mohammad Reza",
-                "A",
-                "B",
-                "Mohammad Reza",
-                "A",
-                "B"
-            ),
-        ) {
-//                 get list id
-//                 todo -> go to the detail page
-        }
+//        SearchResult(
+//            list = arrayListOf(
+//                "Ali",
+//                "Mahdi",
+//                "Reza",
+//                "Mohammad Reza",
+//                "A",
+//                "B",
+//                "Mohammad Reza",
+//                "A",
+//                "B"
+//            ),
+//        ) {
+////                 get list id
+////                 todo -> go to the detail page
+//        }
     }
 }

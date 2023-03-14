@@ -18,12 +18,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ir.rahmani.githubproject.R
+import ir.rahmani.githubproject.model.User
 import ir.rahmani.githubproject.ui.theme.GithubprojectTheme
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchResult(list: ArrayList<String>, onClick: (id: Int) -> Unit) {
+fun SearchResult(list: List<User>, onClick: (id: Int) -> Unit) {
 
     GithubprojectTheme {
 
@@ -46,23 +47,30 @@ fun SearchResult(list: ArrayList<String>, onClick: (id: Int) -> Unit) {
                     Row(
                         modifier = Modifier
                             .fillMaxSize()
-                            .background(brush = Brush.linearGradient(colors =
-                                listOf(MaterialTheme.colorScheme.tertiary.copy(0.4f)
-                                    ,MaterialTheme.colorScheme.primary.copy(0.2f))
-                            ))
+                            .background(
+                                brush = Brush.linearGradient(
+                                    colors =
+                                    listOf(
+                                        MaterialTheme.colorScheme.tertiary.copy(0.4f),
+                                        MaterialTheme.colorScheme.primary.copy(0.2f)
+                                    )
+                                )
+                            )
                             .padding(20.dp, 0.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
 
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_launcher_background),// todo-> get images in Data
-                            contentDescription = "use image",
-                            modifier = Modifier
-                                .clip(androidx.compose.foundation.shape.CircleShape)
-                                .size(70.dp)
-                        )
+                        if (list[index].avatar_url!!.isNotEmpty()) {
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_launcher_background),// todo-> get images in Data
+                                contentDescription = "use image",
+                                modifier = Modifier
+                                    .clip(androidx.compose.foundation.shape.CircleShape)
+                                    .size(70.dp)
+                            )
+                        }
                         Text(
-                            text = list[index].toString(),
+                            text = list[index].login.toString(),
                             color = MaterialTheme.colorScheme.tertiary,
                             fontFamily = FontFamily.SansSerif,
                             fontWeight = FontWeight.SemiBold,

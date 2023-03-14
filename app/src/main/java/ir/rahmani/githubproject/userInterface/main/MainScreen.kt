@@ -1,5 +1,7 @@
 package ir.rahmani.githubproject.userInterface.main
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,13 +27,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import ir.rahmani.githubproject.R
+import ir.rahmani.githubproject.model.User
 import ir.rahmani.githubproject.ui.theme.GithubprojectTheme
+import ir.rahmani.githubproject.userInterface.util.ApiState
 import ir.rahmani.githubproject.userInterface.util.NoDataExist
 import ir.rahmani.githubproject.userInterface.util.SearchResult
+import org.koin.androidx.compose.get
+import org.koin.androidx.compose.inject
 
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun MainScreen(navController: NavController) {
+
+    val searchedText by mutableStateOf("")
+    val vm: MainViewModel by inject()
+
+    val dataState:ApiState = vm.response.value
 
     GithubprojectTheme {
         Column(
@@ -52,21 +64,21 @@ fun MainScreen(navController: NavController) {
 
                     Header()
                     Spacer(modifier = Modifier.padding(5.dp))
-                    SearchBox {
-                        // todo -> check for valid inputs
-                        // todo -> go to result screen
+
+                    SearchBox {text->
+                        vm.searchUser(text)
                     }
                 }
             }
-
-            // this part we show are results
-            // if we have no result
-            NoDataExist()
-            //else
-//            SearchResult(list = arrayListOf("Ali","Mahdi","Reza","Mohammad Reza","A","B","Mohammad Reza","A","B")){ id->
-//                 get list id
-//                 todo -> go to the detail page
-//            }
+            // Show Body of MainScreen
+            if (dataState !is ApiState.Success) {
+                NoDataExist()
+            } else {
+//                val users=search(searchedText,vm)
+                SearchResult(dataState.data.items!!) { id ->
+//                     todo onClick item
+            }
+            }
         }
     }
 }
@@ -110,7 +122,7 @@ fun Header() {
 }
 
 @Composable
-fun SearchBox(onClicked: () -> Unit) {
+fun SearchBox(onClicked: (text: String) -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -125,7 +137,7 @@ fun SearchBox(onClicked: () -> Unit) {
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             ),
-            onValueChange = { text = it;onClicked() },
+            onValueChange = { text = it;/*onClicked()*/ },
             singleLine = true,
             textStyle = TextStyle(color = Color.Black),
             leadingIcon = {
@@ -135,7 +147,7 @@ fun SearchBox(onClicked: () -> Unit) {
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(onSearch = {
 
-                onClicked()
+                onClicked(text.text)
             }),
             placeholder = {
                 Text(
@@ -151,3 +163,4 @@ fun SearchBox(onClicked: () -> Unit) {
 
     }
 }
+
