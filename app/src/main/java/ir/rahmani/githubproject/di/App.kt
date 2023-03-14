@@ -3,6 +3,7 @@ package ir.rahmani.githubproject.di
 import android.app.Application
 import ir.rahmani.githubproject.data.ApiInterface
 import ir.rahmani.githubproject.data.repository.Repository
+import ir.rahmani.githubproject.nav.SharedViewModel
 import ir.rahmani.githubproject.userInterface.main.MainViewModel
 import ir.rahmani.githubproject.userInterface.splash.SplashViewModel
 import org.koin.android.ext.koin.androidContext
@@ -19,6 +20,7 @@ class App: Application() {
 
             single { SplashViewModel() }
             single { ApiInterface.create() }
+            single { SharedViewModel() }
             single { Repository(api = get()) }
             single { MainViewModel(repo= get()) }
         }

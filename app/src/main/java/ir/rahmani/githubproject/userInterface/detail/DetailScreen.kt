@@ -1,7 +1,6 @@
 package ir.rahmani.githubproject.userInterface.detail
 
 import android.annotation.SuppressLint
-import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -10,8 +9,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,18 +21,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import ir.rahmani.githubproject.R
 import ir.rahmani.githubproject.model.TabRowItem
-import ir.rahmani.githubproject.userInterface.util.SearchResult
+import ir.rahmani.githubproject.model.User
 import kotlinx.coroutines.launch
 
 
 @Composable
-fun DetailScreen() {
-
+fun DetailScreen(navController:NavHostController,user: User?) {
+    
     Column(
         modifier = Modifier
             .fillMaxSize()

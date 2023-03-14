@@ -25,7 +25,7 @@ import ir.rahmani.githubproject.ui.theme.GithubprojectTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchResult(list: List<User>, onClick: (id: Int) -> Unit) {
+fun SearchResult(list: List<User>, onClick: (user: User) -> Unit) {
 
     GithubprojectTheme {
 
@@ -43,7 +43,7 @@ fun SearchResult(list: List<User>, onClick: (id: Int) -> Unit) {
                         .height(110.dp)
                         .padding(20.dp, 8.dp)
                         .clip(RoundedCornerShape(15.dp)),
-                    onClick = { onClick(index) },
+                    onClick = { onClick(list[index]) },
                 ) {
                     Row(
                         modifier = Modifier
@@ -64,8 +64,9 @@ fun SearchResult(list: List<User>, onClick: (id: Int) -> Unit) {
                         if (list[index].avatar_url!!.isNotEmpty()) {
                             Image(
                                 painter = rememberAsyncImagePainter(
-                                    list[index].avatar_url!!,
-                                    placeholder = painterResource(id = R.drawable.ic_launcher_background)
+                                    list[index].avatar_url, placeholder = painterResource(
+                                        id = R.drawable.ic_launcher_background
+                                    )
                                 ),
                                 contentDescription = "use image",
                                 modifier = Modifier

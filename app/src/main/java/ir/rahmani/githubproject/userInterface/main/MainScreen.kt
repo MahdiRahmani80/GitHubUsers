@@ -33,6 +33,7 @@ import androidx.navigation.NavController
 import ir.rahmani.githubproject.R
 import ir.rahmani.githubproject.model.User
 import ir.rahmani.githubproject.nav.Screen
+import ir.rahmani.githubproject.nav.SharedViewModel
 import ir.rahmani.githubproject.ui.theme.GithubprojectTheme
 import ir.rahmani.githubproject.userInterface.util.ApiState
 import ir.rahmani.githubproject.userInterface.util.NoDataExist
@@ -46,8 +47,8 @@ import org.koin.core.scope.ScopeID
 @Composable
 fun MainScreen(navController: NavController) {
 
-    val searchedText by mutableStateOf("")
     val vm: MainViewModel by inject()
+    val sharedViewModel:SharedViewModel by inject()
 
     val dataState: ApiState = vm.response.value
 
@@ -81,8 +82,9 @@ fun MainScreen(navController: NavController) {
                 NoDataExist()
             } else {
 //                val users=search(searchedText,vm)
-                SearchResult(dataState.data.items!!) { id ->
-//                     navController.navigate(Screen.Splash.route) todo-> go to detail
+                SearchResult(dataState.data.items!!) {user->
+                    sharedViewModel.addUser(user)
+                    navController.navigate(Screen.DetailScreen.route)
                 }
             }
         }
