@@ -8,8 +8,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,6 +50,7 @@ fun DetailScreen(navController: NavHostController, shareVM: SharedViewModel) {
     vm.getFollower(user.login!!)
     vm.getFollowing(user.login!!)
     vm.getRepository(user.login!!)
+    vm.getFavState(user)
 
 
     Scaffold(
@@ -72,13 +72,24 @@ fun DetailScreen(navController: NavHostController, shareVM: SharedViewModel) {
             horizontalAlignment = Alignment.End,
             verticalArrangement = Arrangement.Bottom
         ) {
+
+            var favColor by remember {
+                mutableStateOf(Color.Transparent)
+            }
+
+            favColor = if (!vm.favState.value){
+                MaterialTheme.colorScheme.secondary
+            }else{
+                Color.Red
+            }
+
             FloatingActionButton(onClick = {
                 vm.favHandler(user)
             }, containerColor = MaterialTheme.colorScheme.tertiary) {
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_favorite_24),
                     contentDescription = "favorite",
-                    tint = MaterialTheme.colorScheme.secondary
+                    tint = favColor
                 )
             }
         }

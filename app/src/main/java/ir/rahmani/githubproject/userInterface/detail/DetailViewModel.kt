@@ -37,6 +37,7 @@ class DetailViewModel(private val repository: Repository) : ViewModel() {
             repository.addFavUser(user).catch {
                 Log.e("ADD_FAV_USER", it.message.toString())
             }.collect {
+                favState.value = it
                 Log.i("ADD_FAV_USER", "user successfully added")
             }
         }
@@ -73,6 +74,7 @@ class DetailViewModel(private val repository: Repository) : ViewModel() {
             repository.delFavUser(user).catch {
                 Log.e("REMOVE_USER_LOCAL", it.message.toString())
             }.collect {
+                favState.value = !it
                 Log.e("REMOVE_USER_LOCAL", "result= $it")
             }
         }
