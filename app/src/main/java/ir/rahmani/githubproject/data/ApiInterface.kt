@@ -15,7 +15,7 @@ interface ApiInterface {
 
     @Headers(
         "Accept: application/vnd.github+json",
-        "Authorization: Bearer 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",
+        "Authorization: Bearer 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",
         "X-GitHub-Api-Version: 2022-11-28"
     )
     @GET("search/users")
@@ -23,7 +23,7 @@ interface ApiInterface {
 
     @Headers(
         "Accept: application/vnd.github+json",
-        "Authorization: Bearer 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",
+        "Authorization: Bearer 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",
         "X-GitHub-Api-Version: 2022-11-28"
     )
     @GET("users/{user}/following")
@@ -31,7 +31,7 @@ interface ApiInterface {
 
     @Headers(
         "Accept: application/vnd.github+json",
-        "Authorization: Bearer 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",
+        "Authorization: Bearer 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",
         "X-GitHub-Api-Version: 2022-11-28"
     )
     @GET("users/{user}/followers")
@@ -39,7 +39,7 @@ interface ApiInterface {
 
     @Headers(
         "Accept: application/vnd.github+json",
-        "Authorization: Bearer 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",
+        "Authorization: Bearer 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",
         "X-GitHub-Api-Version: 2022-11-28"
     )
     @GET("users/{user}/repos")
