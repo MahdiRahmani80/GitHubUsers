@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -32,18 +34,24 @@ import ir.rahmani.githubproject.data.apiState.ApiGetUserListState
 import ir.rahmani.githubproject.model.Repository
 import ir.rahmani.githubproject.model.TabRowItem
 import ir.rahmani.githubproject.model.User
+import ir.rahmani.githubproject.nav.Screen
+import ir.rahmani.githubproject.nav.SharedViewModel
+import ir.rahmani.githubproject.userInterface.util.NoDataExist
 import ir.rahmani.githubproject.userInterface.util.SearchResult
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.inject
 
 
 @Composable
-fun DetailScreen(navController: NavHostController, user: User?) {
+fun DetailScreen(navController: NavHostController, shareVM: SharedViewModel) {
+
+
+    val user = shareVM.user.last()
 
     val vm: DetailViewModel by inject()
-    vm.getFollower(user!!.login!!)
-    vm.getFollowing(user!!.login!!)
-    vm.getRepository(user!!.login!!)
+    vm.getFollower(user.login!!)
+    vm.getFollowing(user.login!!)
+    vm.getRepository(user.login!!)
 
 
     Column(
@@ -51,17 +59,15 @@ fun DetailScreen(navController: NavHostController, user: User?) {
             .fillMaxSize()
     ) {
 
-        Header(user, navController)
-        Detail(user, navController, vm)
-        DetailScreenTabLayout()
 
+        Header(user, navController, shareVM)
+        Detail(user, vm, navController)
     }
 }
 
 
 @Composable
-fun Header(user: User?, navController: NavHostController) {
-
+fun Header(user: User?, navController: NavHostController, shareVM: SharedViewModel) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -74,7 +80,16 @@ fun Header(user: User?, navController: NavHostController) {
 
         Box {
             Row {
-                IconButton(onClick = { navController.popBackStack() }) {
+                IconButton(onClick = {
+                    navController.popBackStack()
+                    if(shareVM.user.size == 1 ){
+                        navController.navigate(Screen.MainScreen.route)
+                    } else if (shareVM.user.size > 1) {
+                        shareVM.user.removeAt(shareVM.user.size - 1)
+                        navController.navigate(Screen.DetailScreen.route)
+                    }
+
+                }) {
                     Icon(
                         painter = painterResource(id = R.drawable.baseline_keyboard_backspace_24),
                         contentDescription = "back btn",
@@ -120,14 +135,15 @@ fun Header(user: User?, navController: NavHostController) {
 }
 
 @Composable
-fun Detail(user: User?, navController: NavHostController, vm: DetailViewModel) {
-
+fun Detail(
+    user: User?,
+    vm: DetailViewModel,
+    navController: NavHostController
+) {
     val followerList: List<User>? =
         if (vm.follower.value is ApiGetUserListState.Success)
             (vm.follower.value as ApiGetUserListState.Success).data
         else null
-    val followerCount =
-        if (followerList != null && followerList.size >= 30) "+30" else followerList?.size.toString()
 
     val repoList: List<Repository>? =
         if (vm.repo.value is ApiGetRepository.Success)
@@ -138,8 +154,13 @@ fun Detail(user: User?, navController: NavHostController, vm: DetailViewModel) {
         if (vm.following.value is ApiGetUserListState.Success)
             (vm.following.value as ApiGetUserListState.Success).data
         else null
+
+    val followerCount =
+        if (followerList != null && followerList.size >= 30) "+30" else followerList?.size.toString()
     val followingCount =
         if (followingList != null && followingList.size >= 30) "+30" else followingList?.size.toString()
+    val repoCount =
+        if (repoList != null && repoList.size >= 30) "+30" else repoList?.size.toString()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -234,7 +255,7 @@ fun Detail(user: User?, navController: NavHostController, vm: DetailViewModel) {
                         style = MaterialTheme.typography.bodyMedium,
                     )
                     Text(
-                        text = repoList?.size.toString(),
+                        text = repoCount,
                         color = Color.Black,
                         fontFamily = FontFamily.SansSerif,
                         fontWeight = FontWeight.SemiBold,
@@ -243,15 +264,18 @@ fun Detail(user: User?, navController: NavHostController, vm: DetailViewModel) {
                 }
             }
         }
-
-
     }
+    DetailScreenTabLayout(followingList, followerList, navController)
 }
 
 @OptIn(ExperimentalPagerApi::class)
 @SuppressLint("RememberReturnType")
 @Composable
-fun DetailScreenTabLayout() {
+fun DetailScreenTabLayout(
+    followingList: List<User>?,
+    followerList: List<User>?,
+    navController: NavHostController
+) {
 
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState()
@@ -259,11 +283,11 @@ fun DetailScreenTabLayout() {
     val tabRowItems = listOf(
         TabRowItem(
             title = stringResource(id = R.string.follower),
-            screen = { TabScreen(text = stringResource(id = R.string.follower)) }
+            screen = { TabScreen(followerList, navController) }
         ),
         TabRowItem(
             title = stringResource(id = R.string.following),
-            screen = { TabScreen(text = stringResource(id = R.string.following)) }
+            screen = { TabScreen(followingList, navController) }
         ),
     )
 
@@ -324,15 +348,25 @@ fun DetailScreenTabLayout() {
 }
 
 @Composable
-fun TabScreen(text: String) {
+fun TabScreen(userList: List<User>?, navController: NavHostController) {
+
+    val shareVM: SharedViewModel by inject()
     Box(
         modifier = Modifier
             .fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
-//        SearchResult() {
-//                 get list id
-//                 todo -> go to the detail page
-//        }
+        if (userList == null) {
+            NoDataExist()
+        } else {
+            SearchResult(userList) {
+                shareVM.addUser(it)
+                navController.navigate(Screen.DetailScreen.route) {
+                    popUpTo(Screen.DetailScreen.route) {
+                        inclusive = true
+                    }
+                }
+            }
+        }
     }
 }

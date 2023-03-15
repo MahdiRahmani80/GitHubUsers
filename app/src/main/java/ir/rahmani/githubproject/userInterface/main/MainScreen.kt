@@ -40,10 +40,9 @@ import org.koin.androidx.compose.inject
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun MainScreen(navController: NavController) {
+fun MainScreen(navController: NavController,sharedViewModel: SharedViewModel) {
 
     val vm: MainViewModel by inject()
-    val sharedViewModel:SharedViewModel by inject()
 
     val dataState: ApiSearchUserState = vm.response.value
 
@@ -78,6 +77,7 @@ fun MainScreen(navController: NavController) {
             } else {
 //                val users=search(searchedText,vm)
                 SearchResult(dataState.data.items!!) {user->
+                    sharedViewModel.user.clear()
                     sharedViewModel.addUser(user)
                     navController.navigate(Screen.DetailScreen.route)
                 }

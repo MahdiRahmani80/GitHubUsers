@@ -4,12 +4,10 @@ import android.app.Application
 import ir.rahmani.githubproject.data.ApiInterface
 import ir.rahmani.githubproject.data.repository.Repository
 import ir.rahmani.githubproject.nav.SharedViewModel
-import ir.rahmani.githubproject.userInterface.detail.Detail
 import ir.rahmani.githubproject.userInterface.detail.DetailViewModel
 import ir.rahmani.githubproject.userInterface.main.MainViewModel
 import ir.rahmani.githubproject.userInterface.splash.SplashViewModel
 import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 

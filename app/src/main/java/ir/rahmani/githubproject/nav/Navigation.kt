@@ -1,17 +1,9 @@
 package ir.rahmani.githubproject
 
-import android.util.Log
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.*
-import androidx.navigation.NavArgument
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import ir.rahmani.githubproject.model.User
 import ir.rahmani.githubproject.nav.Screen
 import ir.rahmani.githubproject.nav.SharedViewModel
 import ir.rahmani.githubproject.userInterface.SplashScreen
@@ -22,7 +14,8 @@ import org.koin.androidx.compose.inject
 @Composable
 fun Navigation() {
 
-    val viewModel:SharedViewModel by inject()
+    val viewModel: SharedViewModel by inject()
+    var counter = 0
 
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Screen.Splash.route) {
@@ -31,12 +24,10 @@ fun Navigation() {
             SplashScreen(navController)
         }
         composable(route = Screen.MainScreen.route) {
-            MainScreen(navController)
+            MainScreen(navController, viewModel)
         }
-        composable(
-            route = Screen.DetailScreen.route,
-        ) {
-            DetailScreen(navController, viewModel.user)
+        composable(route = Screen.DetailScreen.route) {
+            DetailScreen(navController, viewModel)
         }
     }
 }

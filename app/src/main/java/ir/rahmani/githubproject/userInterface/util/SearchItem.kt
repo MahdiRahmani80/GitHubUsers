@@ -25,7 +25,7 @@ import ir.rahmani.githubproject.ui.theme.GithubprojectTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchResult(list: List<User>, onClick: (user: User) -> Unit) {
+fun SearchResult(list: List<User>?, onClick: (user: User) -> Unit) {
 
     GithubprojectTheme {
 
@@ -35,57 +35,59 @@ fun SearchResult(list: List<User>, onClick: (user: User) -> Unit) {
                 .background(Color.White)
         ) {
 
-            items(count = list.size) { index ->
+            if (list != null) {
+                items(count = list.size) { index ->
 
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(110.dp)
-                        .padding(20.dp, 8.dp)
-                        .clip(RoundedCornerShape(15.dp)),
-                    onClick = { onClick(list[index]) },
-                ) {
-                    Row(
+                    Card(
                         modifier = Modifier
-                            .fillMaxSize()
-                            .background(
-                                brush = Brush.linearGradient(
-                                    colors =
-                                    listOf(
-                                        MaterialTheme.colorScheme.tertiary.copy(0.4f),
-                                        MaterialTheme.colorScheme.primary.copy(0.2f)
+                            .fillMaxWidth()
+                            .height(110.dp)
+                            .padding(20.dp, 8.dp)
+                            .clip(RoundedCornerShape(15.dp)),
+                        onClick = { onClick(list[index]) },
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(
+                                    brush = Brush.linearGradient(
+                                        colors =
+                                        listOf(
+                                            MaterialTheme.colorScheme.tertiary.copy(0.4f),
+                                            MaterialTheme.colorScheme.primary.copy(0.2f)
+                                        )
                                     )
                                 )
-                            )
-                            .padding(20.dp, 0.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
+                                .padding(20.dp, 0.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
 
-                        if (list[index].avatar_url!!.isNotEmpty()) {
-                            Image(
-                                painter = rememberAsyncImagePainter(
-                                    list[index].avatar_url, placeholder = painterResource(
-                                        id = R.drawable.ic_launcher_background
-                                    )
-                                ),
-                                contentDescription = "use image",
-                                modifier = Modifier
-                                    .clip(androidx.compose.foundation.shape.CircleShape)
-                                    .size(70.dp)
-                            )
+                            if (list[index].avatar_url!!.isNotEmpty()) {
+                                Image(
+                                    painter = rememberAsyncImagePainter(
+                                        list[index].avatar_url, placeholder = painterResource(
+                                            id = R.drawable.ic_launcher_background
+                                        )
+                                    ),
+                                    contentDescription = "use image",
+                                    modifier = Modifier
+                                        .clip(androidx.compose.foundation.shape.CircleShape)
+                                        .size(70.dp)
+                                )
+                            }
+                            Text(
+                                text = list[index].login.toString(),
+                                color = MaterialTheme.colorScheme.tertiary,
+                                fontFamily = FontFamily.SansSerif,
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 18.sp,
+                                modifier = Modifier.padding(20.dp, 0.dp),
+
+                                )
                         }
-                        Text(
-                            text = list[index].login.toString(),
-                            color = MaterialTheme.colorScheme.tertiary,
-                            fontFamily = FontFamily.SansSerif,
-                            fontWeight = FontWeight.SemiBold,
-                            fontSize = 18.sp,
-                            modifier = Modifier.padding(20.dp, 0.dp),
-
-                            )
                     }
-                }
 
+                }
             }
         }
 
