@@ -27,7 +27,7 @@ class MainViewModel(private val repo: Repository) : ViewModel() {
 
             }.catch {
                 response.value = ApiSearchUserState.Failure(it)
-                Log.e("API_TEST", "Failure")
+                Log.e("API_TEST", it.message.toString())
 
             }.collect {
                 response.value = ApiSearchUserState.Success(it)
