@@ -1,7 +1,6 @@
 package ir.rahmani.githubproject.userInterface.main
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,7 +17,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -31,16 +29,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import ir.rahmani.githubproject.R
-import ir.rahmani.githubproject.model.User
 import ir.rahmani.githubproject.nav.Screen
 import ir.rahmani.githubproject.nav.SharedViewModel
 import ir.rahmani.githubproject.ui.theme.GithubprojectTheme
-import ir.rahmani.githubproject.userInterface.util.ApiState
+import ir.rahmani.githubproject.data.apiState.ApiSearchUserState
 import ir.rahmani.githubproject.userInterface.util.NoDataExist
 import ir.rahmani.githubproject.userInterface.util.SearchResult
-import org.koin.androidx.compose.get
 import org.koin.androidx.compose.inject
-import org.koin.core.scope.ScopeID
 
 
 @SuppressLint("UnrememberedMutableState")
@@ -50,7 +45,7 @@ fun MainScreen(navController: NavController) {
     val vm: MainViewModel by inject()
     val sharedViewModel:SharedViewModel by inject()
 
-    val dataState: ApiState = vm.response.value
+    val dataState: ApiSearchUserState = vm.response.value
 
     GithubprojectTheme {
         Column(
@@ -78,7 +73,7 @@ fun MainScreen(navController: NavController) {
                 }
             }
             // Show Body of MainScreen
-            if (dataState !is ApiState.Success) {
+            if (dataState !is ApiSearchUserState.Success) {
                 NoDataExist()
             } else {
 //                val users=search(searchedText,vm)

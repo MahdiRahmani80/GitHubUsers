@@ -27,9 +27,12 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import ir.rahmani.githubproject.R
+import ir.rahmani.githubproject.data.apiState.ApiGetRepository
+import ir.rahmani.githubproject.data.apiState.ApiGetUserListState
+import ir.rahmani.githubproject.model.Repository
 import ir.rahmani.githubproject.model.TabRowItem
 import ir.rahmani.githubproject.model.User
-import ir.rahmani.githubproject.userInterface.util.UrlName
+import ir.rahmani.githubproject.userInterface.util.SearchResult
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.inject
 
@@ -38,9 +41,9 @@ import org.koin.androidx.compose.inject
 fun DetailScreen(navController: NavHostController, user: User?) {
 
     val vm: DetailViewModel by inject()
-    vm.getUrlSource(user!!.repos_url!!,UrlName.REPOSITORY)
-    vm.getUrlSource(user!!.followers_url!!,UrlName.FOLLOWER)
-    vm.getUrlSource(user!!.following_url!!,UrlName.FOLLOWER)
+    vm.getFollower(user!!.login!!)
+    vm.getFollowing(user!!.login!!)
+    vm.getRepository(user!!.login!!)
 
 
     Column(
@@ -119,6 +122,25 @@ fun Header(user: User?, navController: NavHostController) {
 @Composable
 fun Detail(user: User?, navController: NavHostController, vm: DetailViewModel) {
 
+    val followerList: List<User>? =
+        if (vm.follower.value is ApiGetUserListState.Success)
+            (vm.follower.value as ApiGetUserListState.Success).data
+        else null
+    val followerCount =
+        if (followerList != null && followerList.size >= 30) "+30" else followerList?.size.toString()
+
+    val repoList: List<Repository>? =
+        if (vm.repo.value is ApiGetRepository.Success)
+            (vm.repo.value as ApiGetRepository.Success).data
+        else null
+
+    val followingList: List<User>? =
+        if (vm.following.value is ApiGetUserListState.Success)
+            (vm.following.value as ApiGetUserListState.Success).data
+        else null
+    val followingCount =
+        if (followingList != null && followingList.size >= 30) "+30" else followingList?.size.toString()
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -181,7 +203,7 @@ fun Detail(user: User?, navController: NavHostController, vm: DetailViewModel) {
                         style = MaterialTheme.typography.bodyMedium,
                     )
                     Text(
-                        text = vm.followerCount.value!!,
+                        text = followerCount,
                         color = Color.Black,
                         fontFamily = FontFamily.SansSerif,
                         fontWeight = FontWeight.SemiBold,
@@ -197,7 +219,7 @@ fun Detail(user: User?, navController: NavHostController, vm: DetailViewModel) {
                         style = MaterialTheme.typography.bodyMedium,
                     )
                     Text(
-                        text = vm.followingCount.value!!,
+                        text = followingCount,
                         color = Color.Black,
                         fontFamily = FontFamily.SansSerif,
                         fontWeight = FontWeight.SemiBold,
@@ -212,7 +234,7 @@ fun Detail(user: User?, navController: NavHostController, vm: DetailViewModel) {
                         style = MaterialTheme.typography.bodyMedium,
                     )
                     Text(
-                        text = vm.repoCount.value!!,
+                        text = repoList?.size.toString(),
                         color = Color.Black,
                         fontFamily = FontFamily.SansSerif,
                         fontWeight = FontWeight.SemiBold,
@@ -308,21 +330,9 @@ fun TabScreen(text: String) {
             .fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
-//        SearchResult(
-//            list = arrayListOf(
-//                "Ali",
-//                "Mahdi",
-//                "Reza",
-//                "Mohammad Reza",
-//                "A",
-//                "B",
-//                "Mohammad Reza",
-//                "A",
-//                "B"
-//            ),
-//        ) {
-////                 get list id
-////                 todo -> go to the detail page
+//        SearchResult() {
+//                 get list id
+//                 todo -> go to the detail page
 //        }
     }
 }

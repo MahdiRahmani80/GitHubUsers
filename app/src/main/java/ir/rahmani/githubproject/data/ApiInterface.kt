@@ -1,5 +1,6 @@
 package ir.rahmani.githubproject.data
 
+import ir.rahmani.githubproject.model.Repository
 import ir.rahmani.githubproject.model.SearchResult
 import ir.rahmani.githubproject.model.User
 import retrofit2.Retrofit
@@ -25,9 +26,24 @@ interface ApiInterface {
         "Authorization: Bearer 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",
         "X-GitHub-Api-Version: 2022-11-28"
     )
+    @GET("users/{user}/following")
+    suspend fun getFollowing(@Path("user") userLogin:String ): List<User>
+
+    @Headers(
+        "Accept: application/vnd.github+json",
+        "Authorization: Bearer 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",
+        "X-GitHub-Api-Version: 2022-11-28"
+    )
     @GET("users/{user}/followers")
     suspend fun getFollower(@Path("user") userLogin:String ): List<User>
 
+    @Headers(
+        "Accept: application/vnd.github+json",
+        "Authorization: Bearer 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",
+        "X-GitHub-Api-Version: 2022-11-28"
+    )
+    @GET("users/{user}/repos")
+    suspend fun getRepositories(@Path("user") userLogin:String ):List<Repository>
 
 
     companion object {

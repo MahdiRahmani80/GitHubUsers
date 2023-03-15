@@ -15,8 +15,19 @@ class Repository(private val api: ApiInterface) {
         emit(response)
     }.flowOn(Dispatchers.IO)
 
-    suspend fun getFollowers(userName:String):Flow<List<User>> = flow {
-        val response= api.getFollower(userName)
+    suspend fun getFollowers(userName: String): Flow<List<User>> = flow {
+        val response = api.getFollower(userName)
         emit(response)
     }.flowOn(Dispatchers.IO)
+
+    suspend fun getFollowing(userLogin:String):Flow<List<User>> = flow {
+        val response = api.getFollowing(userLogin = userLogin)
+        emit(response)
+    }.flowOn(Dispatchers.IO)
+
+    suspend fun getRepository(userName: String): Flow<List<ir.rahmani.githubproject.model.Repository>> =
+        flow {
+            val response = api.getRepositories(userName)
+            emit(response)
+        }.flowOn(Dispatchers.IO)
 }

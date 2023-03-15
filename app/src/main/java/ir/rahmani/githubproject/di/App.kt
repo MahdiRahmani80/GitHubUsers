@@ -23,7 +23,7 @@ class App: Application() {
             single { SplashViewModel() }
             single { ApiInterface.create() }
             single { SharedViewModel() }
-            single { DetailViewModel() }
+            single { DetailViewModel(get()) }
             single { Repository(api = get()) }
             single { MainViewModel(repo= get()) }
         }
