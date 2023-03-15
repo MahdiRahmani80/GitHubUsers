@@ -41,7 +41,7 @@ import org.koin.androidx.compose.inject
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun MainScreen(navController: NavController,sharedViewModel: SharedViewModel) {
+fun MainScreen(navController: NavController, sharedViewModel: SharedViewModel) {
 
     val vm: MainViewModel by inject()
 
@@ -64,7 +64,7 @@ fun MainScreen(navController: NavController,sharedViewModel: SharedViewModel) {
 
                 Column {
 
-                    Header(navController)
+                    Header(navController,sharedViewModel)
                     Spacer(modifier = Modifier.padding(5.dp))
 
                     SearchBox { text ->
@@ -77,7 +77,7 @@ fun MainScreen(navController: NavController,sharedViewModel: SharedViewModel) {
                 NoDataExist()
             } else {
 //                val users=search(searchedText,vm)
-                SearchResult(dataState.data.items!!) {user->
+                SearchResult(dataState.data.items!!) { user ->
                     sharedViewModel.user.clear()
                     sharedViewModel.addUser(user)
                     navController.navigate(Screen.DetailScreen.route)
@@ -88,7 +88,7 @@ fun MainScreen(navController: NavController,sharedViewModel: SharedViewModel) {
 }
 
 @Composable
-fun Header(navController:NavController) {
+fun Header(navController: NavController,sharedViewModel: SharedViewModel) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxWidth(),
@@ -104,20 +104,24 @@ fun Header(navController:NavController) {
 
         Box {
             Row {
-                IconButton(onClick = {
-                    navController.navigate(Screen.FavScreen.route)
-                }) {
+                IconButton(
+                    onClick = {
+                        sharedViewModel.user.clear()
+                        navController.navigate(Screen.FavScreen.route)
+                    }, modifier = Modifier.size(23.dp)
+                ) {
                     Icon(
                         painter = painterResource(id = R.drawable.baseline_favorite_24),
                         contentDescription = "fav",
                         tint = Color.Red
                     )
                 }
+
                 Icon(
                     painter = painterResource(R.drawable.baseline_settings_24),
                     contentDescription = "setting",
-                    modifier = Modifier.padding(13.dp, 0.dp, 13.dp, 0.dp),
-                    tint = MaterialTheme.colorScheme.tertiary
+                    tint = MaterialTheme.colorScheme.tertiary,
+                    modifier = Modifier.padding(10.dp,0.dp,10.dp,0.dp,)
                 )
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_language_24),

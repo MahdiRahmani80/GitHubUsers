@@ -9,6 +9,7 @@ import ir.rahmani.githubproject.data.local.DataBase
 import ir.rahmani.githubproject.data.repository.Repository
 import ir.rahmani.githubproject.nav.SharedViewModel
 import ir.rahmani.githubproject.userInterface.detail.DetailViewModel
+import ir.rahmani.githubproject.userInterface.fav.FavViewModel
 import ir.rahmani.githubproject.userInterface.main.MainViewModel
 import ir.rahmani.githubproject.userInterface.splash.SplashViewModel
 import org.koin.android.ext.koin.androidApplication
@@ -31,6 +32,7 @@ class App : Application() {
             single {  }
             single { SplashViewModel() }
             single { ApiInterface.create() }
+            single { FavViewModel(get()) }
             single { provideUserDao(get()) }
             single { SharedViewModel() }
             single { DetailViewModel(get()) }

@@ -15,8 +15,8 @@ interface Dao {
     @Query("SELECT * FROM user")
     fun getAllFav():List<User>
 
-//    @Query("SELECT * FROM user WHERE id=id")
-//    fun getUser(user: User)
+    @Query("SELECT EXISTS(SELECT * FROM user WHERE id=:id)")
+    fun isInFavUserExist(id: Int):Boolean
 
     @Delete
     fun delFavUser(user: User)

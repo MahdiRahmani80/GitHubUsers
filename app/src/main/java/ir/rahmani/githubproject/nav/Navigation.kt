@@ -31,7 +31,7 @@ fun Navigation() {
             DetailScreen(navController, viewModel)
         }
         composable(route= Screen.FavScreen.route){
-            Favorite(navController = navController)
+            Favorite(navController = navController, sharedViewModel = viewModel)
         }
     }
 }

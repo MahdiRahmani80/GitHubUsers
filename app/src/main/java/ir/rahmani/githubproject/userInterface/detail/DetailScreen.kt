@@ -73,7 +73,7 @@ fun DetailScreen(navController: NavHostController, shareVM: SharedViewModel) {
             verticalArrangement = Arrangement.Bottom
         ) {
             FloatingActionButton(onClick = {
-                vm.addFavUser(user)
+                vm.favHandler(user)
             }, containerColor = MaterialTheme.colorScheme.tertiary) {
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_favorite_24),
@@ -132,20 +132,23 @@ fun Header(user: User?, navController: NavHostController, shareVM: SharedViewMod
 
         Box {
             Row {
-                IconButton(onClick = {
-                    navController.navigate(Screen.FavScreen.route)
-                }) {
+                IconButton(
+                    onClick = {
+                        navController.navigate(Screen.FavScreen.route)
+                    }, modifier = Modifier.size(23.dp)
+                ) {
                     Icon(
                         painter = painterResource(id = R.drawable.baseline_favorite_24),
                         contentDescription = "fav",
                         tint = Color.Red
                     )
                 }
+
                 Icon(
                     painter = painterResource(R.drawable.baseline_settings_24),
                     contentDescription = "setting",
-                    modifier = Modifier.padding(13.dp, 0.dp, 13.dp, 0.dp),
-                    tint = MaterialTheme.colorScheme.tertiary
+                    tint = MaterialTheme.colorScheme.tertiary,
+                    modifier = Modifier.padding(10.dp, 0.dp, 10.dp, 0.dp)
                 )
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_language_24),

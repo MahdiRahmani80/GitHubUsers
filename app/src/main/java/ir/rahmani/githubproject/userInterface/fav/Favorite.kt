@@ -7,6 +7,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,22 +20,30 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import ir.rahmani.githubproject.R
+import ir.rahmani.githubproject.nav.Screen
+import ir.rahmani.githubproject.nav.SharedViewModel
+import ir.rahmani.githubproject.userInterface.util.FavItem
 import ir.rahmani.githubproject.userInterface.util.SearchResult
+import org.koin.androidx.compose.inject
 
 @Composable
-fun Favorite(navController: NavHostController) {
+fun Favorite(navController: NavHostController,sharedViewModel: SharedViewModel) {
+
+    val vm:FavViewModel by inject()
+    vm.getAllFavUsers()
 
     Column(modifier = Modifier.fillMaxSize()) {
 
-        Header()
-        SearchResult(list = null) {
-
+        Header(navController)
+        FavItem(list = vm.favUsers.value) {
+            sharedViewModel.addUser(it)
+            navController.navigate(Screen.DetailScreen.route)
         }
     }
 }
 
 @Composable
-fun Header() {
+fun Header(navController: NavHostController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -48,7 +57,7 @@ fun Header() {
         Box {
             Row {
                 IconButton(onClick = {
-                    // todo -> back track
+                    navController.popBackStack()
                 }) {
                     Icon(
                         painter = painterResource(id = R.drawable.baseline_keyboard_backspace_24),

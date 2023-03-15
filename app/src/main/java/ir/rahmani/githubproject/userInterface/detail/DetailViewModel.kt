@@ -29,15 +29,51 @@ class DetailViewModel(private val repository: Repository) : ViewModel() {
     val following: MutableState<ApiGetUserListState> by lazy {
         mutableStateOf(ApiGetUserListState.Empty)
     }
-    val isUserAdded = mutableStateOf(false)
+    val favState = mutableStateOf(false)
 
-    fun addFavUser(user: User) {
+
+    private fun addFavUser(user: User) {
         viewModelScope.launch {
             repository.addFavUser(user).catch {
                 Log.e("ADD_FAV_USER", it.message.toString())
             }.collect {
-                isUserAdded.value = true
-                Log.i("ADD_FAV_USER","user successfully added")
+                Log.i("ADD_FAV_USER", "user successfully added")
+            }
+        }
+    }
+
+    fun getFavState(user: User) {
+        viewModelScope.launch {
+            repository.isExistInFav(user.id!!).catch {
+                Log.e("EXIST_USER_LOCAL", it.message.toString())
+            }.collect {
+                Log.i("EXIST_USER_LOCAL", "isExist= $it")
+                favState.value = it
+            }
+        }
+    }
+
+    fun favHandler(user: User) {
+        viewModelScope.launch {
+            repository.isExistInFav(user.id!!).catch {
+                Log.e("EXIST_USER_LOCAL", it.message.toString())
+            }.collect {
+                Log.i("EXIST_USER_LOCAL", "isExist= $it")
+                if (it) {
+                    removeFromFav(user)
+                } else {
+                    addFavUser(user)
+                }
+            }
+        }
+    }
+
+    private fun removeFromFav(user: User) {
+        viewModelScope.launch {
+            repository.delFavUser(user).catch {
+                Log.e("REMOVE_USER_LOCAL", it.message.toString())
+            }.collect {
+                Log.e("REMOVE_USER_LOCAL", "result= $it")
             }
         }
     }

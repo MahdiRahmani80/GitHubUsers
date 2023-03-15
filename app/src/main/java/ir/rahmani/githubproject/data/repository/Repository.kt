@@ -48,4 +48,9 @@ class Repository(private val api: ApiInterface, private val dao: Dao) {
         val response =dao.getAllFav()
         emit(response)
     }.flowOn(Dispatchers.IO)
+
+    suspend fun isExistInFav(id:Int):Flow<Boolean> = flow {
+        val bool = dao.isInFavUserExist(id)
+        emit(bool)
+    }.flowOn(Dispatchers.IO)
 }
