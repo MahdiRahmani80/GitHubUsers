@@ -1,8 +1,12 @@
 package ir.rahmani.githubproject.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "user")
 data class User(
     val login:String?,
-    val id:Int?,
+    @PrimaryKey val id:Int?,
     val node_id:String?,
     val avatar_url:String?,
     val url:String?,

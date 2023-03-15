@@ -28,6 +28,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import ir.rahmani.githubproject.R
 import ir.rahmani.githubproject.nav.Screen
 import ir.rahmani.githubproject.nav.SharedViewModel
@@ -63,7 +64,7 @@ fun MainScreen(navController: NavController,sharedViewModel: SharedViewModel) {
 
                 Column {
 
-                    Header()
+                    Header(navController)
                     Spacer(modifier = Modifier.padding(5.dp))
 
                     SearchBox { text ->
@@ -87,7 +88,7 @@ fun MainScreen(navController: NavController,sharedViewModel: SharedViewModel) {
 }
 
 @Composable
-fun Header() {
+fun Header(navController:NavController) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxWidth(),
@@ -103,11 +104,15 @@ fun Header() {
 
         Box {
             Row {
-                Icon(
-                    painter = painterResource(id = R.drawable.baseline_favorite_24),
-                    contentDescription = "fav",
-                    tint = Color.Red
-                )
+                IconButton(onClick = {
+                    navController.navigate(Screen.FavScreen.route)
+                }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_favorite_24),
+                        contentDescription = "fav",
+                        tint = Color.Red
+                    )
+                }
                 Icon(
                     painter = painterResource(R.drawable.baseline_settings_24),
                     contentDescription = "setting",

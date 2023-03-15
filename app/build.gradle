@@ -3,6 +3,9 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
 android {
     namespace 'ir.rahmani.githubproject'
     compileSdk 33
@@ -68,7 +71,12 @@ dependencies {
     // load image
     implementation("io.coil-kt:coil-compose:2.0.0-rc01")
 
+    // live Data
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
+
+    // room DataBase Handler
+    implementation "androidx.room:room-runtime:2.4.0"
+    kapt "androidx.room:room-compiler:2.4.0"
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'

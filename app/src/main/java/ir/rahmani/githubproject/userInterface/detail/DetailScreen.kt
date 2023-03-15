@@ -9,7 +9,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,7 +21,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -42,9 +40,10 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.inject
 
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(navController: NavHostController, shareVM: SharedViewModel) {
-
 
     val user = shareVM.user.last()
 
@@ -54,14 +53,35 @@ fun DetailScreen(navController: NavHostController, shareVM: SharedViewModel) {
     vm.getRepository(user.login!!)
 
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
+    Scaffold(
+        floatingActionButtonPosition = FabPosition.End,
+        modifier = Modifier.fillMaxSize()
     ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            Header(user, navController, shareVM)
+            Detail(user, vm, navController)
+        }
 
-
-        Header(user, navController, shareVM)
-        Detail(user, vm, navController)
+        Column(
+            Modifier
+                .fillMaxSize()
+                .padding(15.dp),
+            horizontalAlignment = Alignment.End,
+            verticalArrangement = Arrangement.Bottom
+        ) {
+            FloatingActionButton(onClick = {
+                vm.addFavUser(user)
+            }, containerColor = MaterialTheme.colorScheme.tertiary) {
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_favorite_24),
+                    contentDescription = "favorite",
+                    tint = MaterialTheme.colorScheme.secondary
+                )
+            }
+        }
     }
 }
 
@@ -82,7 +102,7 @@ fun Header(user: User?, navController: NavHostController, shareVM: SharedViewMod
             Row {
                 IconButton(onClick = {
                     navController.popBackStack()
-                    if(shareVM.user.size == 1 ){
+                    if (shareVM.user.size == 1) {
                         navController.navigate(Screen.MainScreen.route)
                     } else if (shareVM.user.size > 1) {
                         shareVM.user.removeAt(shareVM.user.size - 1)
@@ -112,11 +132,15 @@ fun Header(user: User?, navController: NavHostController, shareVM: SharedViewMod
 
         Box {
             Row {
-                Icon(
-                    painter = painterResource(id = R.drawable.baseline_favorite_24),
-                    contentDescription = "fav",
-                    tint = Color.Red
-                )
+                IconButton(onClick = {
+                    navController.navigate(Screen.FavScreen.route)
+                }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_favorite_24),
+                        contentDescription = "fav",
+                        tint = Color.Red
+                    )
+                }
                 Icon(
                     painter = painterResource(R.drawable.baseline_settings_24),
                     contentDescription = "setting",
@@ -219,13 +243,13 @@ fun Detail(
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
                         text = stringResource(id = R.string.follower),
-                        color = Color.Black,
+                        color = Color.Gray,
                         fontFamily = FontFamily.SansSerif,
                         style = MaterialTheme.typography.bodyMedium,
                     )
                     Text(
                         text = followerCount,
-                        color = Color.Black,
+                        color = Color.Gray,
                         fontFamily = FontFamily.SansSerif,
                         fontWeight = FontWeight.SemiBold,
                         style = MaterialTheme.typography.labelLarge,
@@ -235,13 +259,13 @@ fun Detail(
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
                         text = stringResource(id = R.string.following),
-                        color = Color.Black,
+                        color = Color.Gray,
                         fontFamily = FontFamily.SansSerif,
                         style = MaterialTheme.typography.bodyMedium,
                     )
                     Text(
                         text = followingCount,
-                        color = Color.Black,
+                        color = Color.Gray,
                         fontFamily = FontFamily.SansSerif,
                         fontWeight = FontWeight.SemiBold,
                         style = MaterialTheme.typography.labelLarge,
@@ -250,13 +274,13 @@ fun Detail(
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
                         text = stringResource(id = R.string.repository),
-                        color = Color.Black,
+                        color = Color.Gray,
                         fontFamily = FontFamily.SansSerif,
                         style = MaterialTheme.typography.bodyMedium,
                     )
                     Text(
                         text = repoCount,
-                        color = Color.Black,
+                        color = Color.Gray,
                         fontFamily = FontFamily.SansSerif,
                         fontWeight = FontWeight.SemiBold,
                         style = MaterialTheme.typography.labelLarge,
@@ -265,6 +289,9 @@ fun Detail(
             }
         }
     }
+
+
+
     DetailScreenTabLayout(followingList, followerList, navController)
 }
 
@@ -314,7 +341,7 @@ fun DetailScreenTabLayout(
                     Text(
                         text = item.title,
                         maxLines = 1,
-                        color = Color.Black,
+                        color = Color.Gray,
                         overflow = TextOverflow.Ellipsis,
                     )
                     if (!selected) {
@@ -356,7 +383,7 @@ fun TabScreen(userList: List<User>?, navController: NavHostController) {
             .fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
-        if (userList == null) {
+        if (userList?.size == 0) {
             NoDataExist()
         } else {
             SearchResult(userList) {

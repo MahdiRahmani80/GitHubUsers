@@ -12,7 +12,9 @@ import ir.rahmani.githubproject.data.apiState.ApiGetRepository
 import ir.rahmani.githubproject.data.apiState.ApiGetUserListState
 import ir.rahmani.githubproject.data.apiState.ApiSearchUserState
 import ir.rahmani.githubproject.data.repository.Repository
+import ir.rahmani.githubproject.model.User
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
@@ -21,13 +23,24 @@ class DetailViewModel(private val repository: Repository) : ViewModel() {
     val repo: MutableState<ApiGetRepository> by lazy {
         mutableStateOf(ApiGetRepository.Empty)
     }
-    val follower:MutableState<ApiGetUserListState> by lazy {
+    val follower: MutableState<ApiGetUserListState> by lazy {
         mutableStateOf(ApiGetUserListState.Empty)
     }
     val following: MutableState<ApiGetUserListState> by lazy {
         mutableStateOf(ApiGetUserListState.Empty)
     }
+    val isUserAdded = mutableStateOf(false)
 
+    fun addFavUser(user: User) {
+        viewModelScope.launch {
+            repository.addFavUser(user).catch {
+                Log.e("ADD_FAV_USER", it.message.toString())
+            }.collect {
+                isUserAdded.value = true
+                Log.i("ADD_FAV_USER","user successfully added")
+            }
+        }
+    }
 
     fun getFollower(user: String) {
         viewModelScope.launch {
@@ -69,9 +82,9 @@ class DetailViewModel(private val repository: Repository) : ViewModel() {
             }.catch {
                 Log.e("GET_FOLLOWING", it.toString())
                 following.value = ApiGetUserListState.Failure(it)
-            }.collect{
+            }.collect {
                 Log.i("GET_FOLLOWING", it.toString())
-                following.value=ApiGetUserListState.Success(it)
+                following.value = ApiGetUserListState.Success(it)
             }
         }
     }

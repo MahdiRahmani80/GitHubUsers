@@ -5,4 +5,5 @@
     <string name="follower">Follower</string>
     <string name="following">Following</string>
     <string name="repository">Repository</string>
+    <string name="fav">Favorite User</string>
 </resources>

@@ -8,6 +8,7 @@ import ir.rahmani.githubproject.nav.Screen
 import ir.rahmani.githubproject.nav.SharedViewModel
 import ir.rahmani.githubproject.userInterface.SplashScreen
 import ir.rahmani.githubproject.userInterface.detail.DetailScreen
+import ir.rahmani.githubproject.userInterface.fav.Favorite
 import ir.rahmani.githubproject.userInterface.main.MainScreen
 import org.koin.androidx.compose.inject
 
@@ -28,6 +29,9 @@ fun Navigation() {
         }
         composable(route = Screen.DetailScreen.route) {
             DetailScreen(navController, viewModel)
+        }
+        composable(route= Screen.FavScreen.route){
+            Favorite(navController = navController)
         }
     }
 }
