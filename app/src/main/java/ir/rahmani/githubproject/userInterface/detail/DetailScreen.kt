@@ -22,25 +22,34 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import ir.rahmani.githubproject.R
 import ir.rahmani.githubproject.model.TabRowItem
 import ir.rahmani.githubproject.model.User
+import ir.rahmani.githubproject.userInterface.util.UrlName
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.inject
 
 
 @Composable
-fun DetailScreen(navController:NavHostController,user: User?) {
-    
+fun DetailScreen(navController: NavHostController, user: User?) {
+
+    val vm: DetailViewModel by inject()
+    vm.getUrlSource(user!!.repos_url!!,UrlName.REPOSITORY)
+    vm.getUrlSource(user!!.followers_url!!,UrlName.FOLLOWER)
+    vm.getUrlSource(user!!.following_url!!,UrlName.FOLLOWER)
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
 
-        Header()
-        Detail()
+        Header(user, navController)
+        Detail(user, navController, vm)
         DetailScreenTabLayout()
 
     }
@@ -48,7 +57,7 @@ fun DetailScreen(navController:NavHostController,user: User?) {
 
 
 @Composable
-fun Header() {
+fun Header(user: User?, navController: NavHostController) {
 
     Row(
         modifier = Modifier
@@ -62,13 +71,15 @@ fun Header() {
 
         Box {
             Row {
-                Icon(
-                    painter = painterResource(id = R.drawable.baseline_keyboard_backspace_24),
-                    contentDescription = "back btn",
-                    tint = MaterialTheme.colorScheme.tertiary
-                )
+                IconButton(onClick = { navController.popBackStack() }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_keyboard_backspace_24),
+                        contentDescription = "back btn",
+                        tint = MaterialTheme.colorScheme.tertiary
+                    )
+                }
                 Text(
-                    text = "Mahdi Rahmani",
+                    text = user?.login.toString(),
                     fontFamily = FontFamily.SansSerif,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.tertiary,
@@ -106,7 +117,7 @@ fun Header() {
 }
 
 @Composable
-fun Detail() {
+fun Detail(user: User?, navController: NavHostController, vm: DetailViewModel) {
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -117,7 +128,10 @@ fun Detail() {
     ) {
 
         Image(
-            painter = painterResource(id = R.drawable.ic_launcher_background),// todo-> get images in Data
+            painter = rememberAsyncImagePainter(
+                model = user?.avatar_url,
+                placeholder = painterResource(id = R.drawable.ic_launcher_background)
+            ),
             contentDescription = "use image",
             modifier = Modifier
                 .padding(0.dp, 8.dp, 0.dp, 0.dp)
@@ -126,7 +140,7 @@ fun Detail() {
         )
 
         Text(
-            text = "My name is Mahdi",
+            text = user?.login.toString(),
             fontFamily = FontFamily.SansSerif,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.tertiary,
@@ -167,7 +181,7 @@ fun Detail() {
                         style = MaterialTheme.typography.bodyMedium,
                     )
                     Text(
-                        text = "29",
+                        text = vm.followerCount.value!!,
                         color = Color.Black,
                         fontFamily = FontFamily.SansSerif,
                         fontWeight = FontWeight.SemiBold,
@@ -183,7 +197,7 @@ fun Detail() {
                         style = MaterialTheme.typography.bodyMedium,
                     )
                     Text(
-                        text = "23",
+                        text = vm.followingCount.value!!,
                         color = Color.Black,
                         fontFamily = FontFamily.SansSerif,
                         fontWeight = FontWeight.SemiBold,
@@ -198,7 +212,7 @@ fun Detail() {
                         style = MaterialTheme.typography.bodyMedium,
                     )
                     Text(
-                        text = "5",
+                        text = vm.repoCount.value!!,
                         color = Color.Black,
                         fontFamily = FontFamily.SansSerif,
                         fontWeight = FontWeight.SemiBold,
@@ -270,7 +284,6 @@ fun DetailScreenTabLayout() {
                     .background(MaterialTheme.colorScheme.primary)
                     .clip(RoundedCornerShape(30, 30, 0, 0))
                     .background(Color.White)
-
                 else Modifier
                     .background(color = MaterialTheme.colorScheme.primary)
                     .clip(RoundedCornerShape(30, 30, 0, 0))
