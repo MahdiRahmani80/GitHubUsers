@@ -15,16 +15,24 @@ The GitHub Android App allows users to search for GitHub users and view their pr
   - Number of repositories
   - GitHub profile link
 
-## Screenshots
+## Screenshots (Dark Mode)
 
 <p float="left">
-  <img src="https://github.com/MahdiRahmani80/GitHubUsers/raw/main/screenShot/sphash.jpg" width="200" />
-  <img src="https://github.com/MahdiRahmani80/GitHubUsers/raw/main/screenShot/main.jpg" width="200" /> 
-  <img src="https://github.com/MahdiRahmani80/GitHubUsers/raw/main/screenShot/search.jpg" width="200" />
+  <img src="https://github.com/MahdiRahmani80/GitHubUsers/raw/main/screenShot/sphash.jpg" width="150" />
+  <img src="https://github.com/MahdiRahmani80/GitHubUsers/raw/main/screenShot/main.jpg" width="150" /> 
+  <img src="https://github.com/MahdiRahmani80/GitHubUsers/raw/main/screenShot/search.jpg" width="150" />
+  <img src="https://github.com/MahdiRahmani80/GitHubUsers/raw/main/screenShot/detail.jpg" width="150" />
+  <img src="https://github.com/MahdiRahmani80/GitHubUsers/raw/main/screenShot/fav.jpg" width="150" /> 
 </p>
+
+## Screenshots (Light Mode)
+
 <p float="left">
-  <img src="https://github.com/MahdiRahmani80/GitHubUsers/raw/main/screenShot/detail.jpg" width="200" />
-  <img src="https://github.com/MahdiRahmani80/GitHubUsers/raw/main/screenShot/fav.jpg" width="200" /> 
+  <img src="https://github.com/MahdiRahmani80/GitHubUsers/raw/main/screenShot/sphash.light.jpg" width="100" />
+  <img src="https://github.com/MahdiRahmani80/GitHubUsers/raw/main/screenShot/main.light.jpg" width="100" /> 
+  <img src="https://github.com/MahdiRahmani80/GitHubUsers/raw/main/screenShot/search.light.jpg" width="100" />
+  <img src="https://github.com/MahdiRahmani80/GitHubUsers/raw/main/screenShot/detail.light.jpg" width="100" />
+  <img src="https://github.com/MahdiRahmani80/GitHubUsers/raw/main/screenShot/fav.light.jpg" width="100" /> 
 </p>
 
 ## Video
